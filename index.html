@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You are invited — Wedding Invitation</title>
+<meta name="theme-color" content="#6d0b17">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Pinyon+Script&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- COVER: photobooth frame -->
+<section class="cover" id="cover">
+  <p class="eyebrow">We are getting married!</p>
+  <h1 class="names"><span data-bind="bride"></span> <i>&amp;</i> <span data-bind="groom"></span></h1>
+
+  <div class="booth" id="booth">
+    <img class="cart" src="assets/cartouche.svg" alt="">
+    <div class="clip">
+      <div class="pstrip">
+        <img src="assets/Photo-1.jpg" alt=""><img src="assets/Photo-2.jpg" alt="">
+        <img src="assets/Photo-3.jpg" alt=""><img src="assets/Photo-4.jpg" alt="">
+        <div class="tab" data-bind="dateShort"></div>
+      </div>
+    </div>
+    <div class="slot"></div>
+    <button class="lace-heart bell" aria-label="Click the button to begin">
+      <img src="assets/lace-heart.svg" alt=""><span>Click the<br>Button</span>
+    </button>
+    <button class="doorbell bell" aria-label="Press the button"></button>
+  </div>
+
+  <button class="open-label" id="openBtn">Open Invitation</button>
+</section>
+
+<!-- Transition: "Save our date" ghost -->
+<div class="ghost" id="ghost" aria-hidden="true"><img src="assets/carnation.svg" alt=""><span>Save<br>our<br>Date</span></div>
+
+<!-- MAIN INVITATION -->
+<main class="main" id="main" aria-hidden="true">
+  <section class="scrap-wrap">
+    <div class="scrap">
+      <img class="s-cart pop" style="--d:0" src="assets/cartouche.svg" alt="">
+      <img class="s-carn pop" style="--d:.25;--r:-2deg" src="assets/carnation.svg" alt="">
+      <p class="s-save pop" style="--d:.5;--r:-9deg">Save<br>our<br>Date</p>
+      <div class="s-strip pop" style="--d:.7;--r:3deg">
+        <img src="assets/Photo-1.jpg" alt="Couple photograph"><img src="assets/Photo-2.jpg" alt="Couple photograph">
+        <img src="assets/Photo-3.jpg" alt="Couple photograph"><img src="assets/Photo-4.jpg" alt="Couple photograph">
+      </div>
+      <span class="s-beads pop" style="--d:.9"></span>
+      <div class="s-heart pop" style="--d:1;--r:-3deg">
+        <img src="assets/lace-heart.svg" alt="">
+        <p><span data-bind="dateShort"></span><br><span data-bind="city"></span></p>
+      </div>
+      <button class="s-vinyl pop" id="vinyl" style="--d:1.2" aria-label="Play or pause music"><span class="disc"></span></button>
+      <span class="s-tap pop" style="--d:1.3">Tap to play</span>
+    </div>
+  </section>
+
+  <section class="count reveal">
+    <h2 class="label">The countdown is on!</h2>
+    <div class="timer" role="timer">
+      <div><b id="d">000</b><small>Days</small></div><span class="co">:</span>
+      <div><b id="h">00</b><small>Hours</small></div><span class="co">:</span>
+      <div><b id="m">00</b><small>Minutes</small></div><span class="co">:</span>
+      <div><b id="s">00</b><small>Seconds</small></div>
+    </div>
+  </section>
+
+  <section class="invite reveal">
+    <h2 class="formal">Formal invitation to follow</h2>
+    <img class="orn" src="assets/ornament.svg" alt="">
+    <p class="msg">With the blessings of our families and the joy in our hearts, we invite you to celebrate the beginning of our forever.</p>
+    <dl class="details">
+      <div><dt>Date</dt><dd><span data-bind="dateText"></span><br><span data-bind="time"></span></dd></div>
+      <div><dt>Ceremony</dt><dd><span data-bind="venue"></span><br><em data-bind="venueAddress"></em></dd></div>
+      <div><dt>Reception</dt><dd data-bind="reception"></dd></div>
+    </dl>
+    <a class="btn" id="rsvp" href="#" target="_blank" rel="noopener">Share your address</a>
+    <a class="btn" id="map" href="#" target="_blank" rel="noopener">View venue on map</a>
+    <p class="contact">For any questions, please contact us at:<br><a id="mail" href="#" data-bind="email"></a></p>
+    <p class="big-names"><span data-bind="bride"></span> <i>&amp;</i> <span data-bind="groom"></span></p>
+  </section>
+
+</main>
+
+<!-- Always-visible footer -->
+<footer class="foot"><p>Made by <em>Tej Chinzah</em></p></footer>
+
+<button class="sound" id="sound" aria-label="Toggle music" hidden>♪</button>
+<script src="script.js"></script>
+</body>
+</html>
