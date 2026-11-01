@@ -1,6 +1,6 @@
 /* ===== CONFIGURE YOUR WEDDING HERE ===== */
 const CONFIG = {
-  bride: "Stacy", groom: "Puipuia",
+  bride: "Mawli", groom: "Puipuia",
   date: "2027-02-14T16:00:00",              // countdown target (local time)
   dateShort: "14.02.2027", dateText: "Sunday, 14 February 2027",
   time: "4:00 in the afternoon",
@@ -14,7 +14,13 @@ const CONFIG = {
 };
 
 const $ = id => document.getElementById(id);
-document.querySelectorAll("[data-bind]").forEach(el => el.textContent = CONFIG[el.dataset.bind]);
+const D = new Date(CONFIG.date), fd = o => D.toLocaleDateString("en-GB", o);
+Object.assign(CONFIG, { weekday: fd({ weekday: "long" }), day: D.getDate(), month: fd({ month: "long" }), year: D.getFullYear(),
+  timeShort: D.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }) });
+document.querySelectorAll("[data-bind]").forEach(el => {
+  const v = String(CONFIG[el.dataset.bind]);
+  el.textContent = el.hasAttribute("data-lines") ? v.split(/,\s*/).join("\n") : v;
+});
 /* if a photo file is missing, fall back to the placeholder so the layout never breaks */
 document.querySelectorAll('img[src*="Photo-"]').forEach(img => img.addEventListener("error", () => {
   img.src = img.getAttribute("src").replace(/Photo-(\d)\.\w+$/, "photo-$1.svg");
@@ -85,7 +91,7 @@ let pressed = false;
 function press() {
   if (pressed) return; pressed = true;
   booth.classList.add("printed", "full"); cover.classList.add("printed", "flash");
-  setTimeout(() => cover.classList.add("ready"), 5200);   // after the roll-out finishes
+  setTimeout(() => cover.classList.add("ready"), 3700);   // right after the roll-out finishes
 }
 document.querySelectorAll(".bell").forEach(b => b.addEventListener("click", press));
 
@@ -93,7 +99,7 @@ $("openBtn").addEventListener("click", () => {
   startMusic();
   cover.classList.remove("ready"); cover.classList.add("opening"); booth.classList.add("drop");
   $("main").setAttribute("aria-hidden", "false");
-  setTimeout(() => { cover.classList.add("gone"); $("ghost").classList.add("show"); }, 1800);
-  setTimeout(() => { $("ghost").classList.remove("show"); document.body.classList.add("opened"); window.scrollTo(0, 0); }, 3800);
-  setTimeout(() => cover.style.display = "none", 4600);
+  setTimeout(() => { cover.classList.add("gone"); $("ghost").classList.add("show"); }, 700);
+  setTimeout(() => { $("ghost").classList.remove("show"); document.body.classList.add("opened"); window.scrollTo(0, 0); }, 1700);
+  setTimeout(() => cover.style.display = "none", 2300);
 }, { once: true });
