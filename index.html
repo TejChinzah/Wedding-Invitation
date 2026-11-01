@@ -53,7 +53,7 @@
       <span class="s-beads pop" style="--d:.9"></span>
       <div class="s-heart pop" style="--d:1;--r:-3deg">
         <img src="assets/lace-heart.svg" alt="">
-        <p><span data-bind="dateShort"></span><br><span data-bind="city"></span></p>
+        <p><b data-bind="dateShort"></b><em data-bind="timeShort"></em><span data-lines data-bind="city"></span></p>
       </div>
       <button class="s-vinyl pop" id="vinyl" style="--d:1.2" aria-label="Play or pause music"><span class="disc"></span></button>
       <span class="s-tap pop" style="--d:1.3">Tap to play</span>
@@ -74,13 +74,23 @@
     <h2 class="formal">Formal invitation to follow</h2>
     <img class="orn" src="assets/ornament.svg" alt="">
     <p class="msg">With the blessings of our families and the joy in our hearts, we invite you to celebrate the beginning of our forever.</p>
-    <dl class="details">
-      <div><dt>Date</dt><dd><span data-bind="dateText"></span><br><span data-bind="time"></span></dd></div>
-      <div><dt>Ceremony</dt><dd><span data-bind="venue"></span><br><em data-bind="venueAddress"></em></dd></div>
-      <div><dt>Reception</dt><dd data-bind="reception"></dd></div>
-    </dl>
-    <a class="btn" id="rsvp" href="#" target="_blank" rel="noopener">Share your address</a>
-    <a class="btn" id="map" href="#" target="_blank" rel="noopener">View venue on map</a>
+    <div class="blk when">
+      <p class="cap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>When</p>
+      <p class="wd" data-bind="weekday"></p>
+      <p class="dnum"><b data-bind="day"></b><span><span data-bind="month"></span><span data-bind="year"></span></span></p>
+      <p class="at" data-bind="time"></p>
+    </div>
+    <div class="blk where">
+      <p class="cap"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Where</p>
+      <p class="venue" data-bind="venue"></p>
+      <p class="addr"><span data-bind="venueAddress"></span><br><span data-bind="city"></span></p>
+      <a class="btn" id="map" href="#" target="_blank" rel="noopener">View venue on map</a>
+    </div>
+    <div class="blk recep">
+      <p class="cap"><svg viewBox="0 0 24 24"><path d="M8 3h8l-1 7a3 3 0 0 1-6 0zM12 13v7M8.5 20h7"/></svg>Reception</p>
+      <p class="addr" data-bind="reception"></p>
+    </div>
+    <a class="btn solid" id="rsvp" href="#" target="_blank" rel="noopener">Share your address</a>
     <p class="contact">For any questions, please contact us at:<br><a id="mail" href="#" data-bind="email"></a></p>
     <p class="big-names"><span data-bind="bride"></span> <i>&amp;</i> <span data-bind="groom"></span></p>
   </section>
