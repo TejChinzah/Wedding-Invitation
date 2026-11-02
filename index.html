@@ -4,13 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>You are invited — Wedding Invitation</title>
-<meta name="theme-color" content="#6d0b17">
+<meta name="theme-color" content="#3f060e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Pinyon+Script&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<!-- load the cover artwork early so the first screen never waits -->
+<link rel="preload" as="image" href="assets/cartouche.svg">
+<link rel="preload" as="image" href="assets/lace-heart.svg">
+<link rel="preload" as="image" href="assets/Photo-1.jpg">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
 
 <!-- COVER: photobooth frame -->
 <section class="cover" id="cover">
@@ -18,7 +25,7 @@
   <h1 class="names"><span data-bind="bride"></span> <i>&amp;</i> <span data-bind="groom"></span></h1>
 
   <div class="booth" id="booth">
-    <img class="cart" src="assets/cartouche.svg" alt="">
+    <img class="cart" src="assets/cartouche.svg" alt="" decoding="async">
     <div class="clip">
       <div class="pstrip">
         <img src="assets/Photo-1.jpg" alt=""><img src="assets/Photo-2.jpg" alt="">
