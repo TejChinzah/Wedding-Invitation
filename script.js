@@ -9,7 +9,7 @@ const CONFIG = {
   reception: "Dinner and dancing at The Dining Hall, 7:00 PM",
   email: "puipuiachinzah1999@gmail.com",
   mapUrl: "https://www.google.com/maps/place/Hmuifang+Hall+of+Residence,+MZU/@23.7406866,92.6499824,365m/data=!3m1!1e3!4m14!1m7!3m6!1s0x374d932e6aa49045:0xd107cfbea6e4cdbc!2sMizoram+University!8m2!3d23.7337677!4d92.6682138!16s%2Fm%2F025vsyn!3m5!1s0x374ded000eb163fb:0x764034f76fcb9c3a!8m2!3d23.7406866!4d92.650849!16s%2Fg%2F11zddyzwv8?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D",
-  rsvpUrl: "mailto:tejchinnzah1999@gmail.com?subject=My%20address",
+  rsvpUrl: "mailto:tejchinzah1999@gmail.com?subject=My%20address",
   music: "assets/music.mp3"                 // optional; a soft built-in melody plays if missing
 };
 
