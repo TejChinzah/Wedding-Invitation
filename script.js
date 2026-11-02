@@ -1,7 +1,7 @@
 /* ===== CONFIGURE YOUR WEDDING HERE ===== */
 const CONFIG = {
   bride: "Mawli", groom: "Puipuia",
-  date: "2026-12-25T16:00:00",              // countdown target (local time)
+  date: "2027-02-14T16:00:00",              // countdown target (local time) — matches dateText
   dateShort: "14.02.2027", dateText: "Sunday, 14 February 2027",
   time: "4:00 in the afternoon",
   city: "Aizawl, Mizoram",
@@ -14,6 +14,7 @@ const CONFIG = {
 };
 
 const $ = id => document.getElementById(id);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const D = new Date(CONFIG.date), fd = o => D.toLocaleDateString("en-GB", o);
 Object.assign(CONFIG, { weekday: fd({ weekday: "long" }), day: D.getDate(), month: fd({ month: "long" }), year: D.getFullYear(),
   timeShort: D.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }) });
@@ -21,27 +22,61 @@ document.querySelectorAll("[data-bind]").forEach(el => {
   const v = String(CONFIG[el.dataset.bind]);
   el.textContent = el.hasAttribute("data-lines") ? v.split(/,\s*/).join("\n") : v;
 });
-/* if a photo file is missing, fall back to the placeholder so the layout never breaks */
-document.querySelectorAll('img[src*="Photo-"]').forEach(img => img.addEventListener("error", () => {
-  img.src = img.getAttribute("src").replace(/Photo-(\d)\.\w+$/, "photo-$1.svg");
+/* missing photo → placeholder, so the layout never breaks (case-insensitive, any extension) */
+document.querySelectorAll('img[src*="hoto-"]').forEach(img => img.addEventListener("error", () => {
+  img.src = img.getAttribute("src").replace(/[Pp]hoto-(\d)\.\w+$/, "photo-$1.svg");
 }, { once: true }));
 $("rsvp").href = CONFIG.rsvpUrl; $("map").href = CONFIG.mapUrl; $("mail").href = "mailto:" + CONFIG.email;
 
-/* ----- countdown ----- */
-const target = new Date(CONFIG.date).getTime();
+/* ----- cover names: letter-by-letter reveal ----- */
+let n = 0;
+document.querySelectorAll(".names [data-bind]").forEach(el => {
+  const t = el.textContent; el.setAttribute("aria-label", t); el.textContent = "";
+  [...t].forEach(c => { const s = document.createElement("span"); s.className = "ch"; s.setAttribute("aria-hidden", "true");
+    s.style.setProperty("--i", n++); s.textContent = c; el.appendChild(s); });
+  n += 1;
+});
+document.querySelector(".names i").style.setProperty("--i", CONFIG.bride.length);
+
+/* ----- countdown (digits glide in only when they change) ----- */
+const target = D.getTime(), last = {};
+const p = (v, l = 2) => String(v).padStart(l, "0");
 function tick() {
-  const t = Math.max(0, target - Date.now()) / 1000, p = (n, l = 2) => String(n).padStart(l, "0");
-  $("d").textContent = p(Math.floor(t / 86400), 3); $("h").textContent = p(Math.floor(t % 86400 / 3600));
-  $("m").textContent = p(Math.floor(t % 3600 / 60)); $("s").textContent = p(Math.floor(t % 60));
+  const t = Math.max(0, target - Date.now()) / 1000;
+  const v = { d: p(Math.floor(t / 86400), 3), h: p(Math.floor(t % 86400 / 3600)), m: p(Math.floor(t % 3600 / 60)), s: p(Math.floor(t % 60)) };
+  for (const k in v) if (last[k] !== v[k]) {
+    const el = $(k); el.textContent = v[k];
+    if (last[k] !== undefined && !reduce) { el.classList.remove("tick"); void el.offsetWidth; el.classList.add("tick"); }
+    last[k] = v[k];
+  }
 }
 tick(); setInterval(tick, 1000);
 
-/* ----- scroll reveal ----- */
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
+/* ----- scroll reveal + progress hairline ----- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+let raf = 0;
+addEventListener("scroll", () => { if (raf) return; raf = requestAnimationFrame(() => {
+  raf = 0; const h = document.documentElement.scrollHeight - innerHeight;
+  $("progress").style.transform = "scaleX(" + (h > 0 ? Math.min(1, scrollY / h) : 0) + ")";
+}); }, { passive: true });
 
-/* ----- music ----- */
-let mode = null, audio, ctx, master, started = false;
+/* ----- falling petals (starts after the invitation opens) ----- */
+function petals() {
+  if (reduce) return;
+  const box = $("petals"), count = innerWidth < 600 ? 12 : 22;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("i"), s = 8 + Math.random() * 12;
+    el.style.cssText = `left:${Math.random() * 100}%;width:${s}px;height:${s * 1.25}px;--dx:${(Math.random() - .5) * 220}px;--rot:${(Math.random() < .5 ? -1 : 1) * (180 + Math.random() * 360)}deg;animation-duration:${14 + Math.random() * 14}s;animation-delay:${-Math.random() * 20}s;opacity:0`;
+    box.appendChild(el);
+  }
+}
+
+/* ----- music: file is pre-buffered so it starts instantly on open ----- */
+let mode = null, ctx, master, started = false, audioFail = false;
+const audio = new Audio(); audio.preload = "auto"; audio.loop = true; audio.volume = 0;
+audio.addEventListener("error", () => audioFail = true); audio.src = CONFIG.music;
+function fadeIn() { let v = audio.volume; (function f() { v = Math.min(.6, v + .02); audio.volume = v; if (v < .6) requestAnimationFrame(f); })(); }
 function synth() {
   ctx = new (window.AudioContext || window.webkitAudioContext)();
   master = ctx.createGain(); master.gain.value = 0;
@@ -63,35 +98,37 @@ function synth() {
     while (t0 < ctx.currentTime + 2.5) {
       const [b, ch] = bars[bar % 4], me = mel[bar % 4];
       note(b, t0, 1.6, "triangle", .35);
-      ch.forEach((n, i) => note(n, t0 + beat * i, 1.2, "sine", .13));
-      me.forEach((n, i) => note(n, t0 + beat * i, 1.4, "sine", .2));
+      ch.forEach((x, i) => note(x, t0 + beat * i, 1.2, "sine", .13));
+      me.forEach((x, i) => note(x, t0 + beat * i, 1.4, "sine", .2));
       t0 += beat * 3; bar++;
     }
   };
   sched(); setInterval(sched, 700);
 }
+const useSynth = () => { try { synth(); mode = "synth"; } catch (e) {} };
 function startMusic() {
   if (started) return; started = true;
   $("sound").hidden = false; document.body.classList.add("playing");
-  audio = new Audio(CONFIG.music); audio.loop = true; audio.volume = .6;
-  audio.play().then(() => mode = "file").catch(() => { try { synth(); mode = "synth"; } catch (e) {} });
+  if (audioFail) return useSynth();
+  audio.play().then(() => { mode = "file"; fadeIn(); }).catch(useSynth);
 }
 function toggleMusic() {
   if (!started) return startMusic();
   const on = document.body.classList.toggle("playing");
-  if (mode === "file") on ? audio.play() : audio.pause();
+  if (mode === "file") { if (on) { audio.play(); fadeIn(); } else audio.pause(); }
   else if (mode === "synth") on ? ctx.resume() : ctx.suspend();
 }
 $("sound").addEventListener("click", toggleMusic);
 $("vinyl").addEventListener("click", toggleMusic);
 
-/* ----- cover flow: press button → flash → photo rolls out → "Open Invitation" glows → tap to open ----- */
+/* ----- cover flow: press → flash → photo rolls out → "Open Invitation" glows → tap to open ----- */
 const cover = $("cover"), booth = $("booth");
 let pressed = false;
 function press() {
   if (pressed) return; pressed = true;
+  navigator.vibrate && navigator.vibrate(18);
   booth.classList.add("printed", "full"); cover.classList.add("printed", "flash");
-  setTimeout(() => cover.classList.add("ready"), 3700);   // right after the roll-out finishes
+  setTimeout(() => cover.classList.add("ready"), reduce ? 300 : 2250);   // as the roll-out settles
 }
 document.querySelectorAll(".bell").forEach(b => b.addEventListener("click", press));
 
@@ -99,7 +136,7 @@ $("openBtn").addEventListener("click", () => {
   startMusic();
   cover.classList.remove("ready"); cover.classList.add("opening"); booth.classList.add("drop");
   $("main").setAttribute("aria-hidden", "false");
-  setTimeout(() => { cover.classList.add("gone"); $("ghost").classList.add("show"); }, 700);
-  setTimeout(() => { $("ghost").classList.remove("show"); document.body.classList.add("opened"); window.scrollTo(0, 0); }, 1700);
-  setTimeout(() => cover.style.display = "none", 2300);
+  setTimeout(() => { cover.classList.add("gone"); $("ghost").classList.add("show"); }, 450);
+  setTimeout(() => { $("ghost").classList.remove("show"); document.body.classList.add("opened"); window.scrollTo(0, 0); petals(); }, 1150);
+  setTimeout(() => cover.style.display = "none", 1500);
 }, { once: true });
