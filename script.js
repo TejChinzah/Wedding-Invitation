@@ -1,14 +1,14 @@
 /* ===== CONFIGURE YOUR WEDDING HERE ===== */
 const CONFIG = {
   bride: "Mawli", groom: "Puipuia",
-  date: "2027-02-14T16:00:00",              // countdown target (local time)
+  date: "2026-12-25T16:00:00",              // countdown target (local time)
   dateShort: "14.02.2027", dateText: "Sunday, 14 February 2027",
   time: "4:00 in the afternoon",
   city: "Aizawl, Mizoram",
-  venue: "St. Mary's Church", venueAddress: "SF/D30, MZU",
+  venue: "Mizoram University", venueAddress: "SF/D30, Hmuifang Hostel",
   reception: "Dinner and dancing at The Dining Hall, 7:00 PM",
   email: "puipuiachinzah1999@gmail.com",
-  mapUrl: "https://maps.google.com/?q=St.+Mary%27s+Church",
+  mapUrl: "https://www.google.com/maps/place/Hmuifang+Hall+of+Residence,+MZU/@23.7406866,92.6499824,365m/data=!3m1!1e3!4m14!1m7!3m6!1s0x374d932e6aa49045:0xd107cfbea6e4cdbc!2sMizoram+University!8m2!3d23.7337677!4d92.6682138!16s%2Fm%2F025vsyn!3m5!1s0x374ded000eb163fb:0x764034f76fcb9c3a!8m2!3d23.7406866!4d92.650849!16s%2Fg%2F11zddyzwv8?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D",
   rsvpUrl: "mailto:tejchinnzah1999@gmail.com?subject=My%20address",
   music: "assets/music.mp3"                 // optional; a soft built-in melody plays if missing
 };
