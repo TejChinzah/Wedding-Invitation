@@ -1,8 +1,8 @@
 /* ===== CONFIGURE YOUR WEDDING HERE ===== */
 const CONFIG = {
   bride: "Mawli", groom: "Puipuia",
-  date: "2027-02-14T16:00:00",              // countdown target (local time) — matches dateText
-  dateShort: "14.02.2027", dateText: "Sunday, 14 February 2027",
+  date: "2026-12-25T16:00:00",              // countdown target (local time) — matches dateText
+  dateShort: "25.12.2026", dateText: "Friday, 25 December 2026",
   time: "4:00 in the afternoon",
   city: "Aizawl, Mizoram",
   venue: "Mizoram University", venueAddress: "SF/D30, Hmuifang Hostel",
