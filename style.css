@@ -171,3 +171,9 @@ body:not(.playing) .sound{opacity:.55;text-decoration:line-through}
   .booth.full .pstrip{transform:none!important}.booth.drop .pstrip{transform:translateY(125%)!important}
   .petals{display:none}
 }
+#whatsapp {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
